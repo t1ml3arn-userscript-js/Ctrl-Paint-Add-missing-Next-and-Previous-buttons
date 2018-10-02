@@ -72,6 +72,7 @@
                 }
             }
         });
+        return results;
     }
     try {
         log(`[ ${GM_info.script.name} ] inited`);
@@ -108,7 +109,7 @@
         // library page, collect the series!
         TUTORIAL_SERIES = readSeriesFromCurrentPage();
         log(TUTORIAL_SERIES);
-        
+
     } else if(false){
         // this is a series page
     } else {
