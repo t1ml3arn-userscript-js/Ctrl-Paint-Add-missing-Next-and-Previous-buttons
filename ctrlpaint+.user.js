@@ -114,6 +114,8 @@
 
     let SCRIPT_HANDLER;
     let GM = {};
+    
+    let TUTORIAL_SERIES;
     const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
 
     try {
@@ -155,9 +157,6 @@
         log('ctrlpaint+ inited partialy. Something went wrong.');
     }
     
-    let TUTORIAL_SERIES;
-    
-
     // if this is a video series page - show add buttons to next/previous videos
     // Also answer this comment when you done https://www.ctrlpaint.com/videos/ctrlpaint-unplugged-road-map
     
