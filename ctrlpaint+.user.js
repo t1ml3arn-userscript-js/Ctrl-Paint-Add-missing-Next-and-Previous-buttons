@@ -99,6 +99,19 @@
         throw 'Not implemented';
     }
 
+    // testing vars section start ---------
+    
+    const FIRST_TIME = 1;
+    const LIB_PAGE = 2;
+    const PARSE_LIB_PAGE = 3;
+    const SAVE_TUTOR_DATA = 4;
+    const FETCH_LIB_PAGE = 4;
+    const SEQUENCE_1 = [FIRST_TIME, LIB_PAGE, PARSE_LIB_PAGE, SAVE_TUTOR_DATA].join();
+    const SEQUENCE_2 = [FIRST_TIME, -LIB_PAGE, FETCH_LIB_PAGE, PARSE_LIB_PAGE, SAVE_TUTOR_DATA].join();
+    let ___TEST_SEQUENCE___ = [];
+    
+    // testing vars section end ---------
+
     let SCRIPT_HANDLER;
     let GM = {};
     const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
@@ -172,29 +185,39 @@
 
         if(TUTORIAL_SERIES == null){
             // FIRST TIME!
-
+            // ___TEST_SEQUENCE___.push(FIRST_TIME);
             let libPageEreg = /\/library\//i;
     
             if(libPageEreg.test(window.location.pathname)){
                 // library page, collect the series!
+                // ___TEST_SEQUENCE___.push(LIB_PAGE);
 
                 TUTORIAL_SERIES = readSeriesFrom(document);
 
-                // store series structure into storage
+                // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+                // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             } else {
                 // not a library page, need to fetch that page first
+                // ___TEST_SEQUENCE___.push(-LIB_PAGE);
                 
                 let response = await fetch('https://www.ctrlpaint.com/library/');
                 if(!response.ok) throw 'Cannot fetch library page at https://www.ctrlpaint.com/library/';
                 
+                // ___TEST_SEQUENCE___.push(FETCH_LIB_PAGE);
+
                 let pageText = await response.text();
                 let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
 
                 TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
+                // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+                // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             }
         }
+
+        // testSequence(___TEST_SEQUENCE___, SEQUENCE_1, 'Sequence 1');
+        // testSequence(___TEST_SEQUENCE___, SEQUENCE_2, 'Sequence 2');
 
         // check if current page is a VIDEO page
         let seriesData = getTutorialSeriesData();
@@ -225,6 +248,15 @@
         log('arr with NO json', arr);
         await GM.deleteValue('my_arr');
     };
+
+    function testSequence(actualArr, expectedJoined, testName){
+        if(actualArr.join() != expectedJoined){
+            log(actualArr.join(), expectedJoined)
+            throw `${testName} test FAILED`;
+        } else {
+            log(`${testName} test SUCCEDED`);
+        }
+    }
 
     // tests section end ---------
 })();
