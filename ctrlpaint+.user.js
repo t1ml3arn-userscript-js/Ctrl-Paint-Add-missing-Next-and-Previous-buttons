@@ -133,6 +133,14 @@
         await GM.deleteValue('test_set_value');
         let values = await GM.listValues();
         if(values.indexOf('test_set_value') != -1)  throw 'Test for deleting setting failed';
+
+        // Doc is telling only simple types are supported
+        // so we need to be sure if ARRAYS are also supported
+        let src_arr = ['foo', 'bar'];
+        await GM.setValue('my_arr', src_arr);
+        let arr = await GM.getValue('my_arr');
+        log('arr with NO json', arr);
+        await GM.deleteValue('my_arr');
     })();
     
     // if this is a video series page - show add buttons to next/previous videos
