@@ -11,7 +11,8 @@
 // @resource 
 // @run-at document-end
 // @noframes
-// @grant none
+// @grant GM_setValue
+// @grant GM_getValue
 // @license GPLv3 
 // @homepageURL 
 // @supportURL 
