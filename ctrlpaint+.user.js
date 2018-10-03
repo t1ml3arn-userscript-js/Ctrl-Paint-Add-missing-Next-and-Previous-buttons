@@ -70,7 +70,7 @@
                         name: header.textContent,
                         videoNames: names,
                         videoLinks: links,
-                        headerElt: header,
+                        headerElt: header
                     });
                 }
             }
