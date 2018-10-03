@@ -81,9 +81,19 @@
         return results;
     }
     function getTutorialSeriesData() {
-        // TODO compare url and extract data if url matches
-        throw 'Not implemented';
+        let path = window.location.pathname;
+        let videoIndex;
+        let index = TUTORIAL_SERIES.findIndex((seriesData)=>{
+            videoIndex = seriesData.videoLinks.findIndex((link)=>path != "/" && link.indexOf(path) != -1)
+            return videoIndex != -1;
+        });
+
+        if(index == -1)
         return null;
+        
+        let seriesData = TUTORIAL_SERIES[index];
+        seriesData.currentVideoIndex = videoIndex;
+        return seriesData;
     }
     function addButtons(seriesData) {
         throw 'Not implemented';
