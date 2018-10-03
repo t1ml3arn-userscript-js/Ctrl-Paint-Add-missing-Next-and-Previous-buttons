@@ -13,6 +13,8 @@
 // @noframes
 // @grant GM_setValue
 // @grant GM_getValue
+// @grant GM_deleteValue
+// @grant GM_listValues
 // @license GPLv3 
 // @homepageURL 
 // @supportURL 
