@@ -101,6 +101,20 @@
             else
                 return GM_setValue(key, value);
         };
+        GM.deleteValue = function (key) {
+            if(SCRIPT_HANDLER=='Violentmonkey'){
+                GM_deleteValue(key);
+                return Promise.resolve();
+            } else {
+                return GM_deleteValue(key);
+            }
+        };
+        GM.listValues = function () {
+            if(SCRIPT_HANDLER=='Violentmonkey')
+                return Promise.resolve(GM_listValues());
+            else
+                return GM_listValues();
+        };
     } catch (e) {
         log('ctrlpaint+ inited partialy. Something went wrong.');
     }
