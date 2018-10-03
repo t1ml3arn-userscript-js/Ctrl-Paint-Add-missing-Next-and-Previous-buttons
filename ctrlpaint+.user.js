@@ -229,7 +229,7 @@
     // tests section start ---------
 
     // test await for get/set value
-    async function testStorageOperations ()=>{
+    async function testStorageOperations(){
         let before = await GM.getValue('test_set_value', 0);
         if(before != 0) throw 'Test for get default value is failed';
         await GM.setValue('test_set_value', 123);
