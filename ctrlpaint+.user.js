@@ -75,7 +75,18 @@
                 }
             }
         });
+        log(results);
+        if(results.length == 0)
+            throw 'There are no tutorial series at all!';
         return results;
+    }
+    function getTutorialSeriesData() {
+        // TODO compare url and extract data if url matches
+        throw 'Not implemented';
+        return null;
+    }
+    function addButtons(seriesData) {
+        throw 'Not implemented';
     }
 
     let SCRIPT_HANDLER;
@@ -163,24 +174,42 @@
         videoLinks: ['#', '#']
     }
 
-    let libPageEreg = /\/library/i;
+    // need a way to check if this is the first time user visits this site
+    (async ()=>{
+        TUTORIAL_SERIES = await GM.getValue(TUTORIAL_SERIES_KEY, null);
+
+        if(TUTORIAL_SERIES == null){
+            // FIRST TIME!
+
+            let libPageEreg = /\/library\//i;
     
-    if(libPageEreg.test(window.location.pathname)){
-        
-        // library page, collect the series!
+            if(libPageEreg.test(window.location.pathname)){
+                // library page, collect the series!
+
                 TUTORIAL_SERIES = readSeriesFrom(document);
-        log(TUTORIAL_SERIES);
 
-        if(TUTORIAL_SERIES.length == 0)
-            throw 'There are no tutorial series at all!';
+                // store series structure into storage
+                await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+            } else {
+                // not a library page, need to fetch that page first
+                
+                let response = await fetch('https://www.ctrlpaint.com/library/');
+                if(!response.ok) throw 'Cannot fetch library page at https://www.ctrlpaint.com/library/';
+                
+                let pageText = await response.text();
+                let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
 
-        // store series structure into storage
-        GM_setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+                TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
+                await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+            }
+        }
 
-    } else if(false){
-        // this is a series page
-    } else {
-        // do nothing
-    }
+        // check if current page is a VIDEO page
+        let seriesData = getTutorialSeriesData();
+        if(seriesData != null){
+            addButtons(seriesData);
+        }
+
+    })();
 
 })();
