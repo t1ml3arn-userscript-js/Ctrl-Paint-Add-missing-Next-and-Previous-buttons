@@ -78,6 +78,7 @@
 
     let SCRIPT_HANDLER;
     let GM = {};
+    const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
 
     try {
         log(`
@@ -133,6 +134,12 @@
         // library page, collect the series!
         TUTORIAL_SERIES = readSeriesFromCurrentPage();
         log(TUTORIAL_SERIES);
+
+        if(TUTORIAL_SERIES.length == 0)
+            throw 'There are no tutorial series at all!';
+
+        // store series structure into storage
+        GM_setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
 
     } else if(false){
         // this is a series page
