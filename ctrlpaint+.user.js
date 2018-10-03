@@ -74,10 +74,33 @@
         });
         return results;
     }
+
+    let SCRIPT_HANDLER;
+    let GM = {};
+
     try {
-        log(`[ ${GM_info.script.name} ] inited`);
+        log(`
+        [ ${GM_info.script.name} ] inited
+        Script handler is ${GM_info.scriptHandler}
+        `);
+        log(GM_info);
+        SCRIPT_HANDLER = GM_info.scriptHandler;
+
+        GM.info = GM_info;
+        GM.getValue = function (key, default_) {
+            if(SCRIPT_HANDLER=='Violentmonkey')
+                return Promise.resolve(GM_getValue(key, default_));
+            else
+                return GM_getValue(key, default_);
+        };
+        GM.setValue = function (key, value) {
+            if(SCRIPT_HANDLER=='Violentmonkey')
+                return Promise.resolve(GM_setValue(key, value));
+            else
+                return GM_setValue(key, value);
+        };
     } catch (e) {
-        log('ctrlpaint+ inited');
+        log('ctrlpaint+ inited partialy. Something went wrong.');
     }
     
     let TUTORIAL_SERIES;
