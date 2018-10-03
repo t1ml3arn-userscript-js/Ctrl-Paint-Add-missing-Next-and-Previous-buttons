@@ -152,7 +152,7 @@
     let series ={
         name: 'Test Name',
         videoNames: ['welcome', 'tut01'],
-        videoLinks: ['#', '#'],
+        videoLinks: ['#', '#']
     }
 
     let libPageEreg = /\/library/i;
