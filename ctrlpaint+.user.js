@@ -122,7 +122,19 @@
     }
     
     let TUTORIAL_SERIES;
-
+    
+    // test await for get/set value
+    (async ()=>{
+        let before = await GM.getValue('test_set_value', 0);
+        if(before != 0) throw 'Test for get default value is failed';
+        await GM.setValue('test_set_value', 123);
+        let after = await GM.getValue('test_set_value');
+        if(after != 123) throw 'Test for getting value after setting is failed';
+        await GM.deleteValue('test_set_value');
+        let values = await GM.listValues();
+        if(values.indexOf('test_set_value') != -1)  throw 'Test for deleting setting failed';
+    })();
+    
     // if this is a video series page - show add buttons to next/previous videos
     // Also answer this comment when you done https://www.ctrlpaint.com/videos/ctrlpaint-unplugged-road-map
     
