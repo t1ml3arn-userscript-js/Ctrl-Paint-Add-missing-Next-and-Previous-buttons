@@ -181,7 +181,8 @@
     let series ={
         name: 'Test Name',
         videoNames: ['welcome', 'tut01'],
-        videoLinks: ['#', '#']
+        videoLinks: ['#', '#'],
+        currentVideoIndex: -1
     }
 
     // need a way to check if this is the first time user visits this site
