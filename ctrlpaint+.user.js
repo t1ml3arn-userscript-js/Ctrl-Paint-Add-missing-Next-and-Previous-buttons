@@ -45,7 +45,7 @@
         items.forEach((item)=>result.push(item.href));
         return result;
     }
-    function readSeriesFromCurrentPage(){
+    function readSeriesFrom(document){
         let lists = document.querySelectorAll('ol, ul');
         let results = [];
 
@@ -168,7 +168,7 @@
     if(libPageEreg.test(window.location.pathname)){
         
         // library page, collect the series!
-        TUTORIAL_SERIES = readSeriesFromCurrentPage();
+                TUTORIAL_SERIES = readSeriesFrom(document);
         log(TUTORIAL_SERIES);
 
         if(TUTORIAL_SERIES.length == 0)
