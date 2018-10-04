@@ -98,6 +98,25 @@
     function addButtons(seriesData) {
         throw 'Not implemented';
     }
+    function patchSeriesData(seriesData) {
+        
+        try {
+            let data = seriesData.find((item) => item.name.indexOf('Painting With Color') != -1);
+            let index = data.videoNames.indexOf('Color Constructor Pt.2 Exercises');
+            data.videoLinks[index] = 'https://www.ctrlpaint.com/videos/color-constructor-pt2-exercises';
+        } catch (e) {
+            err('Patch-1 error', e);
+        }
+
+        // remove the first series cause it has next/prev buttons
+        index = seriesData.findIndex((item) => item.name.indexOf('Digital Painting 101') != -1);
+        if(index != -1)
+            seriesData.splice(index, 1);
+        else
+            throw 'Patch-2 error';
+        
+        return seriesData;
+    }
 
     // testing vars section start ---------
     
@@ -192,6 +211,7 @@
                 // ___TEST_SEQUENCE___.push(LIB_PAGE);
 
                 TUTORIAL_SERIES = readSeriesFrom(document);
+                TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
 
                 // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
@@ -209,6 +229,7 @@
                 let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
 
                 TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
+                TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
                 // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
                 // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
