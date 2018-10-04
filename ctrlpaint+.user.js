@@ -217,6 +217,7 @@
 
         // testSequence(___TEST_SEQUENCE___, SEQUENCE_1, 'Sequence 1');
         // testSequence(___TEST_SEQUENCE___, SEQUENCE_2, 'Sequence 2');
+        // estimateDuplicates(TUTORIAL_SERIES);
 
         // check if current page is a VIDEO page
         let seriesData = getTutorialSeriesData();
@@ -257,5 +258,22 @@
         }
     }
 
+    // estimate duplicates
+    function estimateDuplicates(series) {
+        let dubs = [];
+        series.forEach((item)=>{
+            let links = item.videoLinks.slice();
+            while(links.length > 0){
+                let link = links.shift();
+                if(links.indexOf(link) != -1){
+                    item.duplicate = link;
+                    dubs.push(item);
+                    break;
+                }
+            }
+        });
+        log('duplicates', dubs);
+    }
+    
     // tests section end ---------
 })();
