@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name ctrlpaint site improver
+// @name ctrlpaint tutorial series connector
 // @namespace 
 // @description Adds next/prev buttons for some tutorial series
-// @author T1m
+// @author T1mL3arn
 // @version 0.1
 // @icon 
 // @match https://www.ctrlpaint.com/*
