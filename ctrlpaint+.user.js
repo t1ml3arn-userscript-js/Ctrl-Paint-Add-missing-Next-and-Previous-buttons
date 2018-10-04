@@ -98,10 +98,10 @@
     function addButtons(seriesData) {
         throw 'Not implemented';
     }
-    function patchSeriesData(seriesData) {
+    function patchSeriesData(seriesDataList) {
         
         try {
-            let data = seriesData.find((item) => item.name.indexOf('Painting With Color') != -1);
+            let data = seriesDataList.find((seriesData) => seriesData.name.indexOf('Painting With Color') != -1);
             let index = data.videoNames.indexOf('Color Constructor Pt.2 Exercises');
             data.videoLinks[index] = 'https://www.ctrlpaint.com/videos/color-constructor-pt2-exercises';
         } catch (e) {
@@ -109,13 +109,13 @@
         }
 
         // remove the first series cause it has next/prev buttons
-        index = seriesData.findIndex((item) => item.name.indexOf('Digital Painting 101') != -1);
+        index = seriesDataList.findIndex((seriesData) => seriesData.name.indexOf('Digital Painting 101') != -1);
         if(index != -1)
-            seriesData.splice(index, 1);
+            seriesDataList.splice(index, 1);
         else
             throw 'Patch-2 error';
         
-        return seriesData;
+        return seriesDataList;
     }
 
     // testing vars section start ---------
