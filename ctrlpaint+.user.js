@@ -89,13 +89,38 @@
         });
 
         if(index == -1)
-        return null;
+            return null;
         
         let seriesData = TUTORIAL_SERIES[index];
         seriesData.currentVideoIndex = videoIndex;
         return seriesData;
     }
     function addButtons(seriesData) {
+        log('ADD BUTTONS!');
+
+        function getButtonHtml(align, href, label) {
+            `<div class="sqs-block button-block sqs-block-button" data-block-type="53">
+            <div class="sqs-block-content">
+                <div class="sqs-block-button-container--${align}" data-alignment="${align}" data-button-size="small">
+                    <a href="${href}" class="sqs-block-button-element--small sqs-block-button-element" data-initialized="true">
+                    Next
+                    <br>
+                    (${label})
+                    </a>
+                </div>
+            </div>
+            </div>`    
+        }
+        
+        let names = seriesData.videoNames;
+        let links = seriesData.videoLinks;
+        let index = seriesData.currentVideoIndex;
+        
+        log(seriesData.name, names[index], links[index], seriesData);
+
+        let nextHtml = index+1 < names.length ? getButtonHtml('right', links[index+1], names[index+1]) : '';
+        let prevHtml = index-1 > -1 ? getButtonHtml('left', links[index-1], names[index-1]) : '';
+        
         throw 'Not implemented';
     }
     function patchSeriesData(seriesDataList) {
@@ -107,7 +132,7 @@
         } catch (e) {
             err('Patch-1 error', e);
         }
-
+        
         // remove the first series cause it has next/prev buttons
         index = seriesDataList.findIndex((seriesData) => seriesData.name.indexOf('Digital Painting 101') != -1);
         if(index != -1)
@@ -133,7 +158,7 @@
 
     let SCRIPT_HANDLER;
     let GM = {};
-    
+
     let TUTORIAL_SERIES;
     const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
 
@@ -200,12 +225,12 @@
     // need a way to check if this is the first time user visits this site
     (async ()=>{
         TUTORIAL_SERIES = await GM.getValue(TUTORIAL_SERIES_KEY, null);
-
+        
         if(TUTORIAL_SERIES == null){
             // FIRST TIME!
             // ___TEST_SEQUENCE___.push(FIRST_TIME);
             let libPageEreg = /\/library\//i;
-    
+            
             if(libPageEreg.test(window.location.pathname)){
                 // library page, collect the series!
                 // ___TEST_SEQUENCE___.push(LIB_PAGE);
@@ -219,7 +244,7 @@
             } else {
                 // not a library page, need to fetch that page first
                 // ___TEST_SEQUENCE___.push(-LIB_PAGE);
-                
+
                 let response = await fetch('https://www.ctrlpaint.com/library/');
                 if(!response.ok) throw 'Cannot fetch library page at https://www.ctrlpaint.com/library/';
                 
@@ -235,7 +260,7 @@
                 // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             }
         }
-
+        
         // testSequence(___TEST_SEQUENCE___, SEQUENCE_1, 'Sequence 1');
         // testSequence(___TEST_SEQUENCE___, SEQUENCE_2, 'Sequence 2');
         // estimateDuplicates(TUTORIAL_SERIES);
