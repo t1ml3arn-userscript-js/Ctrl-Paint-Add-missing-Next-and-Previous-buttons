@@ -3,7 +3,7 @@
 // @namespace 
 // @description Adds next/prev buttons for some tutorial series
 // @author T1mL3arn
-// @version 0.1
+// @version 0.2
 // @icon 
 // @match https://www.ctrlpaint.com/*
 // @exclude-match 
