@@ -126,7 +126,7 @@
             "justify-content", "space-around",
             "align-content", "center",
             "align-items", "center",
-            "margin", "15px",
+            "padding", "15px",
         ].reduce(arrayToCss, '');
 
         let buttonsWrapper = document.createElement('div');
