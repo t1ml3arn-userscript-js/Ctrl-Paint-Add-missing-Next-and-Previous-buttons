@@ -117,7 +117,7 @@
             return ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `;
         }
 
-        let btnCss = ["flex", "0 1 auto","align-self", "auto"].reduce(arrayToCss, '');
+        let btnCss = ["flex", "0 1 auto", "align-self", "auto", "margin", "10px"].reduce(arrayToCss, '');
         let videoNameCss = "font-size, 11px, text-transform, none, color, #DDD".split(", ").reduce(arrayToCss);
         let btnContCss = [
             "display", "flex",
