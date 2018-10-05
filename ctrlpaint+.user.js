@@ -96,21 +96,46 @@
         return seriesData;
     }
     function addButtons(seriesData) {
-        log('ADD BUTTONS!');
+        
+        function getButtonHtml(align, href, label, name) {
 
-        function getButtonHtml(align, href, label) {
-            `<div class="sqs-block button-block sqs-block-button" data-block-type="53">
+            return `<div class="button-block sqs-block-button" data-block-type="53" style="${btnCss}">
             <div class="sqs-block-content">
                 <div class="sqs-block-button-container--${align}" data-alignment="${align}" data-button-size="small">
                     <a href="${href}" class="sqs-block-button-element--small sqs-block-button-element" data-initialized="true">
-                    Next
-                    <br>
-                    (${label})
+                    ${label}
+                    ${name ? 
+                    `<br>${name}` : ''
+                    }
                     </a>
                 </div>
             </div>
-            </div>`    
+            </div>`
         }
+
+        let btnCss = 
+        ["flex", "0 1 auto","align-self", "auto"]
+        .reduce((acc, val, ind) => ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `, '');
+        
+        let btnContCss = [
+            "display", "flex",
+            "flex-direction", "row",
+            "flex-wrap", "wrap",
+            "justify-content", "space-around",
+            "align-content", "center",
+            "align-items", "center",
+            "margin", "15px",
+        ].reduce((acc, val, ind) => ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `, '');
+
+        let buttonsWrapper = document.createElement('div');
+        buttonsWrapper.setAttribute('style', btnContCss);
+
+        let videoDescription = document.querySelectorAll('div.sqs-block.html-block.sqs-block-html');
+        if(videoDescription.length != 1)
+            throw 'Video description blocks must be exactly one';
+        
+        videoDescription = videoDescription.item(0);
+        videoDescription.insertAdjacentElement('afterbegin', buttonsWrapper);
         
         let names = seriesData.videoNames;
         let links = seriesData.videoLinks;
@@ -118,10 +143,11 @@
         
         log(seriesData.name, names[index], links[index], seriesData);
 
-        let nextHtml = index+1 < names.length ? getButtonHtml('right', links[index+1], names[index+1]) : '';
-        let prevHtml = index-1 > -1 ? getButtonHtml('left', links[index-1], names[index-1]) : '';
-        
-        throw 'Not implemented';
+        let nextHtml = index+1 < names.length ? getButtonHtml('right', links[index+1], 'NEXT', names[index+1]) : '';
+        let prevHtml = index-1 > -1 ? getButtonHtml('left', links[index-1], 'PREVIOUS', names[index-1]) : '';
+
+        buttonsWrapper.insertAdjacentHTML('beforeend', prevHtml);
+        buttonsWrapper.insertAdjacentHTML('beforeend', nextHtml);
     }
     function patchSeriesData(seriesDataList) {
         
