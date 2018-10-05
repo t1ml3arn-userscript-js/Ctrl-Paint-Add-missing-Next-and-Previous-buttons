@@ -63,7 +63,7 @@
 
                     // just to be sure
                     if(names.length != links.length){
-                        throw 'Count of links isn\'t equal to count of names';
+                        throw `Count of links isn\'t equal to count of names\nProblem in ${header.textContent}`;
                     }
 
                     results.push({
