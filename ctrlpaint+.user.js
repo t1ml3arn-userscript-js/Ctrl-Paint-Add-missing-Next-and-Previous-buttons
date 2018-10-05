@@ -1,14 +1,11 @@
 // ==UserScript==
 // @name ctrlpaint tutorial series connector
-// @namespace 
+// @namespace https://github.com/T1mL3arn
 // @description Adds next/prev buttons for some tutorial series
 // @author T1mL3arn
 // @version 0.2
-// @icon 
-// @match https://www.ctrlpaint.com/*
-// @exclude-match 
-// @require 
-// @resource 
+// @icon https://static1.squarespace.com/static/50a3c190e4b0d12fc9231429/t/50f87f8ce4b0b3f0a2deeb1d/1537054440579/
+// @match https://www.ctrlpaint.com/* 
 // @run-at document-end
 // @noframes
 // @grant GM_setValue
@@ -230,7 +227,7 @@
     
     // if this is a video series page - show add buttons to next/previous videos
     // Also answer this comment when you done https://www.ctrlpaint.com/videos/ctrlpaint-unplugged-road-map
-    
+
     // structure sample
     let series ={
         name: 'First Steps',                /* Name of chapter */
