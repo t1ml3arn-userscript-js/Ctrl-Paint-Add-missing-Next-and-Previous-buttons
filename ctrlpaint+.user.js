@@ -97,15 +97,16 @@
     }
     function addButtons(seriesData) {
         
-        function getButtonHtml(align, href, label, name) {
+        function getButtonHtml(href, label, name) {
 
             return `<div class="button-block sqs-block-button" data-block-type="53" style="${btnCss}">
             <div class="sqs-block-content">
-                <div class="sqs-block-button-container--${align}" data-alignment="${align}" data-button-size="small">
+                <div class="sqs-block-button-container--center" data-alignment="center" data-button-size="small">
                     <a href="${href}" class="sqs-block-button-element--small sqs-block-button-element" data-initialized="true">
                     ${label}
                     ${name ? 
-                    `<br>${name}` : ''
+                    `<br>
+                    <span style="${videoNameCss}">${name}</span>` : ''
                     }
                     </a>
                 </div>
@@ -117,7 +118,7 @@
         }
 
         let btnCss = ["flex", "0 1 auto","align-self", "auto"].reduce(arrayToCss, '');
-        
+        let videoNameCss = "font-size, 11px, text-transform, none, color, #DDD".split(", ").reduce(arrayToCss);
         let btnContCss = [
             "display", "flex",
             "flex-direction", "row",
@@ -144,8 +145,8 @@
         
         log(seriesData.name, names[index], links[index], seriesData);
 
-        let nextHtml = index+1 < names.length ? getButtonHtml('right', links[index+1], 'NEXT', names[index+1]) : '';
-        let prevHtml = index-1 > -1 ? getButtonHtml('left', links[index-1], 'PREVIOUS', names[index-1]) : '';
+        let nextHtml = index+1 < names.length ? getButtonHtml(links[index+1], 'NEXT', names[index+1]) : '';
+        let prevHtml = index-1 > -1 ? getButtonHtml(links[index-1], 'PREVIOUS', names[index-1]) : '';
 
         buttonsWrapper.insertAdjacentHTML('beforeend', prevHtml);
         buttonsWrapper.insertAdjacentHTML('beforeend', nextHtml);
