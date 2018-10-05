@@ -132,12 +132,11 @@
         let buttonsWrapper = document.createElement('div');
         buttonsWrapper.setAttribute('style', btnContCss);
 
-        let videoDescription = document.querySelectorAll('div.sqs-block.html-block.sqs-block-html');
-        if(videoDescription.length != 1)
-            throw 'Video description blocks must be exactly one';
+        let videoBlock = document.querySelector('.sqs-block.embed-block.sqs-block-embed');
+        if(videoBlock == null)
+            throw 'There is no video block';
         
-        videoDescription = videoDescription.item(0);
-        videoDescription.insertAdjacentElement('afterbegin', buttonsWrapper);
+        videoBlock.insertAdjacentElement('afterend', buttonsWrapper);
         
         let names = seriesData.videoNames;
         let links = seriesData.videoLinks;
