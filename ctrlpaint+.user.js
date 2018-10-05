@@ -245,11 +245,13 @@
         
         if(TUTORIAL_SERIES == null){
             // FIRST TIME!
+
             // ___TEST_SEQUENCE___.push(FIRST_TIME);
             let libPageEreg = /\/library\//i;
             
             if(libPageEreg.test(window.location.pathname)){
                 // library page, collect the series!
+
                 // ___TEST_SEQUENCE___.push(LIB_PAGE);
 
                 TUTORIAL_SERIES = readSeriesFrom(document);
@@ -260,6 +262,7 @@
                 // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             } else {
                 // not a library page, need to fetch that page first
+
                 // ___TEST_SEQUENCE___.push(-LIB_PAGE);
 
                 let response = await fetch('https://www.ctrlpaint.com/library/');
