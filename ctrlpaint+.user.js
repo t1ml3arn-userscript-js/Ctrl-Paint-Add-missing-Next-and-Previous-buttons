@@ -239,7 +239,6 @@
         currentVideoIndex: -1               /* Uses to find previous or next video in this chapter */
     };
 
-    // need a way to check if this is the first time user visits this site
     (async ()=>{
         TUTORIAL_SERIES = await GM.getValue(TUTORIAL_SERIES_KEY, null);
         
