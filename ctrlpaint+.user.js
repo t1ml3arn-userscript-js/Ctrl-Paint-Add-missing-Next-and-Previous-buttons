@@ -33,13 +33,13 @@
                 return prev;
         return null;
     }
-    function mapListItemsNames(list){
+    function mapsListItemsToNames(list){
         let items = list.querySelectorAll('li > a');
         let result = [];
         items.forEach((item)=>result.push(item.textContent));
         return result;
     }
-    function mapListItemsLinks(list){
+    function mapListItemsToLinks(list){
         let items = list.querySelectorAll('li > a');
         let result = [];
         items.forEach((item)=>result.push(item.href));
@@ -57,9 +57,9 @@
             
             let header = findHeader(list);
             if(header){
-                let links = mapListItemsLinks(list);
+                let links = mapListItemsToLinks(list);
                 if(links.length > 0){
-                    let names = mapListItemsNames(list);
+                    let names = mapsListItemsToNames(list);
 
                     // just to be sure
                     if(names.length != links.length){
@@ -135,7 +135,7 @@
         let videoBlock = document.querySelector('.sqs-block.embed-block.sqs-block-embed');
         if(videoBlock == null)
             throw 'There is no video block';
-        
+
         videoBlock.insertAdjacentElement('afterend', buttonsWrapper);
         
         let names = seriesData.videoNames;
