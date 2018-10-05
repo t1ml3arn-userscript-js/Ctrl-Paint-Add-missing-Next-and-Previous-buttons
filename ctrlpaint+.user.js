@@ -80,7 +80,7 @@
             throw 'There are no tutorial series at all!';
         return results;
     }
-    function getTutorialSeriesData() {
+    function findTutorialSeriesDataForCurrentPage() {
         let path = window.location.pathname;
         let videoIndex;
         let index = TUTORIAL_SERIES.findIndex((seriesData)=>{
@@ -231,16 +231,6 @@
     // if this is a video series page - show add buttons to next/previous videos
     // Also answer this comment when you done https://www.ctrlpaint.com/videos/ctrlpaint-unplugged-road-map
     
-    // 1. check if a page is a part of video series
-    // 2. if so - add buttons to related videos 
-
-    /**
-     * How to know if a page is part of series?
-     * - You need to parse this page https://www.ctrlpaint.com/library/
-     * and create appropriate structures FOR ALL series.
-     * - Also it is needed to store info in settings.
-     */
-
     // structure sample
     let series ={
         name: 'Test Name',
@@ -293,7 +283,7 @@
         // estimateDuplicates(TUTORIAL_SERIES);
 
         // check if current page is a VIDEO page
-        let seriesData = getTutorialSeriesData();
+        let seriesData = findTutorialSeriesDataForCurrentPage();
         if(seriesData != null){
             addButtons(seriesData);
         }
@@ -331,7 +321,7 @@
         }
     }
 
-    // estimate duplicates
+    // estimate duplicate links to video
     function estimateDuplicates(series) {
         let dubs = [];
         series.forEach((item)=>{
