@@ -112,10 +112,11 @@
             </div>
             </div>`
         }
+        function arrayToCss(acc, val, ind){
+            return ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `;
+        }
 
-        let btnCss = 
-        ["flex", "0 1 auto","align-self", "auto"]
-        .reduce((acc, val, ind) => ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `, '');
+        let btnCss = ["flex", "0 1 auto","align-self", "auto"].reduce(arrayToCss, '');
         
         let btnContCss = [
             "display", "flex",
@@ -125,7 +126,7 @@
             "align-content", "center",
             "align-items", "center",
             "margin", "15px",
-        ].reduce((acc, val, ind) => ind%2 == 0 ? `${acc}${val}: ` : `${acc}${val} !important; `, '');
+        ].reduce(arrayToCss, '');
 
         let buttonsWrapper = document.createElement('div');
         buttonsWrapper.setAttribute('style', btnContCss);
