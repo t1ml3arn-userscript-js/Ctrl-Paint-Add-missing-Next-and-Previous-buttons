@@ -233,10 +233,10 @@
     
     // structure sample
     let series ={
-        name: 'Test Name',
-        videoNames: ['welcome', 'tut01'],
-        videoLinks: ['#', '#'],
-        currentVideoIndex: -1
+        name: 'First Steps',                /* Name of chapter */
+        videoNames: ['welcome', 'tut01'],   /* Names of all videos in this chapter  */
+        videoLinks: ['#', '#'],             /* Links to each video in this chapter */
+        currentVideoIndex: -1               /* Uses to find previous or next video in this chapter */
     };
 
     // need a way to check if this is the first time user visits this site
