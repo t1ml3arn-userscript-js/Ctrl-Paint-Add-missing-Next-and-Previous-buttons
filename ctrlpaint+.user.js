@@ -13,9 +13,8 @@
 // @grant GM_deleteValue
 // @grant GM_listValues
 // @license GPLv3 
-// @homepageURL 
-// @supportURL 
-// @downloadURL 
+// @homepageURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons
+// @supportURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons/issues
 // @updateURL 
 // ==/UserScript==
 
