@@ -72,9 +72,10 @@
                 }
             }
         });
-        log(results);
+        
         if(results.length == 0)
             throw 'There are no tutorial series at all!';
+
         return results;
     }
     function findTutorialSeriesDataForCurrentPage() {
@@ -138,8 +139,6 @@
         let names = seriesData.videoNames;
         let links = seriesData.videoLinks;
         let index = seriesData.currentVideoIndex;
-        
-        log(seriesData.name, names[index], links[index], seriesData);
 
         let nextHtml = index+1 < names.length ? getButtonHtml(links[index+1], 'NEXT', names[index+1]) : '';
         let prevHtml = index-1 > -1 ? getButtonHtml(links[index-1], 'PREVIOUS', names[index-1]) : '';
@@ -178,7 +177,6 @@
         [ ${GM_info.script.name} ] inited
         Script handler is ${GM_info.scriptHandler}
         `);
-        log(GM_info);
         SCRIPT_HANDLER = GM_info.scriptHandler;
 
         GM.info = GM_info;
