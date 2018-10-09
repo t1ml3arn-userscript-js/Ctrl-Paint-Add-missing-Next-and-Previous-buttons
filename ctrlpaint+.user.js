@@ -3,7 +3,7 @@
 // @namespace https://github.com/T1mL3arn
 // @description There are no navigation buttons for some video pages of tutorial series. This script adds missing buttons like Next or Previous. 
 // @author T1mL3arn
-// @version 0.2
+// @version 1.0
 // @icon https://static1.squarespace.com/static/50a3c190e4b0d12fc9231429/t/50f87f8ce4b0b3f0a2deeb1d/1537054440579/
 // @match https://www.ctrlpaint.com/* 
 // @run-at document-end
