@@ -167,19 +167,6 @@
         return seriesDataList;
     }
 
-    // testing vars section start ---------
-    
-    const FIRST_TIME = 1;
-    const LIB_PAGE = 2;
-    const PARSE_LIB_PAGE = 3;
-    const SAVE_TUTOR_DATA = 4;
-    const FETCH_LIB_PAGE = 4;
-    const SEQUENCE_1 = [FIRST_TIME, LIB_PAGE, PARSE_LIB_PAGE, SAVE_TUTOR_DATA].join();
-    const SEQUENCE_2 = [FIRST_TIME, -LIB_PAGE, FETCH_LIB_PAGE, PARSE_LIB_PAGE, SAVE_TUTOR_DATA].join();
-    let ___TEST_SEQUENCE___ = [];
-    
-    // testing vars section end ---------
-
     let SCRIPT_HANDLER;
     let GM = {};
 
@@ -238,45 +225,31 @@
         
         if(TUTORIAL_SERIES == null){
             // FIRST TIME!
-
-            // ___TEST_SEQUENCE___.push(FIRST_TIME);
+            
             let libPageEreg = /\/library\//i;
             
             if(libPageEreg.test(window.location.pathname)){
                 // library page, collect the series!
-
-                // ___TEST_SEQUENCE___.push(LIB_PAGE);
-
+                
                 TUTORIAL_SERIES = readSeriesFrom(document);
                 TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
 
-                // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
-                // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             } else {
                 // not a library page, need to fetch that page first
-
-                // ___TEST_SEQUENCE___.push(-LIB_PAGE);
 
                 let response = await fetch('https://www.ctrlpaint.com/library/');
                 if(!response.ok) throw 'Cannot fetch library page at https://www.ctrlpaint.com/library/';
                 
-                // ___TEST_SEQUENCE___.push(FETCH_LIB_PAGE);
-
                 let pageText = await response.text();
                 let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
 
                 TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
                 TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
-                // ___TEST_SEQUENCE___.push(PARSE_LIB_PAGE);
+
                 await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
-                // ___TEST_SEQUENCE___.push(SAVE_TUTOR_DATA);
             }
         }
-        
-        // testSequence(___TEST_SEQUENCE___, SEQUENCE_1, 'Sequence 1');
-        // testSequence(___TEST_SEQUENCE___, SEQUENCE_2, 'Sequence 2');
-        // estimateDuplicates(TUTORIAL_SERIES);
 
         // check if current page is a VIDEO page
         let seriesData = findTutorialSeriesDataForCurrentPage();
@@ -285,54 +258,6 @@
         }
 
     })();
-
-    // tests section start ---------
-
-    // test await for get/set value
-    async function testStorageOperations(){
-        let before = await GM.getValue('test_set_value', 0);
-        if(before != 0) throw 'Test for get default value is failed';
-        await GM.setValue('test_set_value', 123);
-        let after = await GM.getValue('test_set_value');
-        if(after != 123) throw 'Test for getting value after setting is failed';
-        await GM.deleteValue('test_set_value');
-        let values = await GM.listValues();
-        if(values.indexOf('test_set_value') != -1)  throw 'Test for deleting setting failed';
-
-        // Doc is telling only simple types are supported
-        // so we need to be sure if ARRAYS are also supported
-        let src_arr = ['foo', 'bar'];
-        await GM.setValue('my_arr', src_arr);
-        let arr = await GM.getValue('my_arr');
-        log('arr with NO json', arr);
-        await GM.deleteValue('my_arr');
-    };
-
-    function testSequence(actualArr, expectedJoined, testName){
-        if(actualArr.join() != expectedJoined){
-            log(actualArr.join(), expectedJoined)
-            throw `${testName} test FAILED`;
-        } else {
-            log(`${testName} test SUCCEDED`);
-        }
-    }
-
-    // estimate duplicate links to video
-    function estimateDuplicates(series) {
-        let dubs = [];
-        series.forEach((item)=>{
-            let links = item.videoLinks.slice();
-            while(links.length > 0){
-                let link = links.shift();
-                if(links.indexOf(link) != -1){
-                    item.duplicate = link;
-                    dubs.push(item);
-                    break;
-                }
-            }
-        });
-        log('duplicates', dubs);
-    }
     
     // tests section end ---------
 })();
