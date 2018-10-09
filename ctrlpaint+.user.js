@@ -224,9 +224,6 @@
     } catch (e) {
         log('ctrlpaint+ inited partialy. Something went wrong.');
     }
-    
-    // if this is a video series page - show add buttons to next/previous videos
-    // Also answer this comment when you done https://www.ctrlpaint.com/videos/ctrlpaint-unplugged-road-map
 
     // structure sample
     let series ={
