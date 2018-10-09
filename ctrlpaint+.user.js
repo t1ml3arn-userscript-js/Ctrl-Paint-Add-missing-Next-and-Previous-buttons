@@ -15,7 +15,7 @@
 // @license GPLv3 
 // @homepageURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons
 // @supportURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons/issues
-// @updateURL 
+// @updateURL https://greasyfork.org/scripts/373039-ctrl-paint-add-missing-next-and-previous-buttons/code/Ctrl+Paint:%20Add%20missing%20Next%20and%20Previous%20buttons.user.js
 // ==/UserScript==
 
 (function () {
