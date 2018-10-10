@@ -66,8 +66,7 @@
                     results.push({
                         name: header.textContent,
                         videoNames: names,
-                        videoLinks: links,
-                        headerElt: header
+                        videoLinks: links
                     });
                 }
             }
