@@ -3,7 +3,7 @@
 // @namespace https://github.com/T1mL3arn
 // @description There are no navigation buttons for some video pages of tutorial series. This script adds missing buttons like Next or Previous. 
 // @author T1mL3arn
-// @version 1.1
+// @version 1.1.1
 // @icon https://static1.squarespace.com/static/50a3c190e4b0d12fc9231429/t/50f87f8ce4b0b3f0a2deeb1d/1537054440579/
 // @match https://www.ctrlpaint.com/library* 
 // @match https://www.ctrlpaint.com/videos/* 
@@ -20,7 +20,6 @@
 // @license GPLv3 
 // @homepageURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons
 // @supportURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons/issues
-// @updateURL https://greasyfork.org/scripts/373039-ctrl-paint-add-missing-next-and-previous-buttons/code/Ctrl+Paint:%20Add%20missing%20Next%20and%20Previous%20buttons.user.js
 // ==/UserScript==
 
 (() => {
