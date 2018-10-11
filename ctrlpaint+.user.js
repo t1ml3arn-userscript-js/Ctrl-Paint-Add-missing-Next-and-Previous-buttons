@@ -13,13 +13,17 @@
 // @grant GM_getValue
 // @grant GM_deleteValue
 // @grant GM_listValues
+// @grant GM.setValue
+// @grant GM.getValue
+// @grant GM.deleteValue
+// @grant GM.listValues
 // @license GPLv3 
 // @homepageURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons
 // @supportURL https://github.com/t1ml3arn-userscript-js/Ctrl-Paint-Add-missing-Next-and-Previous-buttons/issues
 // @updateURL https://greasyfork.org/scripts/373039-ctrl-paint-add-missing-next-and-previous-buttons/code/Ctrl+Paint:%20Add%20missing%20Next%20and%20Previous%20buttons.user.js
 // ==/UserScript==
 
-(function () {
+(() => {
     // lib section
     let log = console.log;
     let err = console.error;
@@ -163,48 +167,53 @@
             throw 'Patch-2 error';
         
         return seriesDataList;
-    }
-
-    let SCRIPT_HANDLER;
-    let GM = {};
+    }    
 
     let TUTORIAL_SERIES;
     const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
+    
+    let global = this;
+    let gm = {};
 
     try {
-        log(`
-        [ ${GM_info.script.name} ] inited
-        Script handler is ${GM_info.scriptHandler}
-        `);
-        SCRIPT_HANDLER = GM_info.scriptHandler;
 
-        GM.info = GM_info;
-        GM.getValue = function (key, default_) {
-            if(SCRIPT_HANDLER=='Violentmonkey')
-                return Promise.resolve(GM_getValue(key, default_));
-            else
-                return GM_getValue(key, default_);
-        };
-        GM.setValue = function (key, value) {
-            if(SCRIPT_HANDLER=='Violentmonkey')
-                return Promise.resolve(GM_setValue(key, value));
-            else
-                return GM_setValue(key, value);
-        };
-        GM.deleteValue = function (key) {
-            if(SCRIPT_HANDLER=='Violentmonkey'){
-                GM_deleteValue(key);
-                return Promise.resolve();
-            } else {
-                return GM_deleteValue(key);
-            }
-        };
-        GM.listValues = function () {
-            if(SCRIPT_HANDLER=='Violentmonkey')
-                return Promise.resolve(GM_listValues());
-            else
-                return GM_listValues();
-        };
+        if(typeof GM != 'undefined')
+            gm = GM;
+        else {
+            gm = {};
+            gm.info = GM_info;
+            
+            Object.entries({
+                'GM_addStyle': 'addStyle',
+                'GM_deleteValue': 'deleteValue',
+                'GM_getResourceURL': 'getResourceUrl',
+                'GM_getValue': 'getValue',
+                'GM_listValues': 'listValues',
+                'GM_notification': 'notification',
+                'GM_openInTab': 'openInTab',
+                'GM_registerMenuCommand': 'registerMenuCommand',
+                'GM_setClipboard': 'setClipboard',
+                'GM_setValue': 'setValue',
+                'GM_xmlhttpRequest': 'xmlHttpRequest',
+                'GM_getResourceText': 'getResourceText',
+            }).forEach(([oldKey, newKey]) => {
+            let old = global[oldKey] || window[oldKey];
+            if(old && (typeof gm[newKey] == 'undefined')){
+                gm[newKey] = function(...args){
+                    return new Promise((resolve, reject) => {
+                        try { resolve(old.apply(global, args)) } 
+                        catch(e) { reject(e) }
+                    });
+                  }
+                }
+            });
+        }
+
+        log(`
+        [ ${gm.info.script.name} ] inited
+        Script handler is ${gm.info.scriptHandler}
+        `);
+
     } catch (e) {
         log('ctrlpaint+ inited partialy. Something went wrong.');
     }
@@ -218,7 +227,7 @@
     };
 
     (async ()=>{
-        TUTORIAL_SERIES = await GM.getValue(TUTORIAL_SERIES_KEY, null);
+        TUTORIAL_SERIES = await gm.getValue(TUTORIAL_SERIES_KEY, null);
         
         if(TUTORIAL_SERIES == null){
             // FIRST TIME!
@@ -231,7 +240,7 @@
                 TUTORIAL_SERIES = readSeriesFrom(document);
                 TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
 
-                await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+                await gm.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
             } else {
                 // not a library page, need to fetch that page first
 
@@ -244,7 +253,7 @@
                 TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
                 TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
 
-                await GM.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
+                await gm.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
             }
         }
 
