@@ -2,7 +2,7 @@
 
 ## For what?
 
-There are no navigation buttons for some video pages of tutorial series. This script adds missing buttons like Next or Previous.
+There are no navigation buttons for [https://www.ctrlpaint.com/videos/drawing-shape-contour](some video pages) of tutorial series. This script adds missing buttons like Next or Previous.
 
 ## How does it look?
 
