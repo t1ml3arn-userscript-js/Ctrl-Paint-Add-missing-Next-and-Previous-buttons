@@ -80,10 +80,13 @@
 
         return results;
     }
-    function findTutorialSeriesDataForCurrentPage() {
+    async function findTutorialSeriesDataForCurrentPage() {
+        const data = await gm.getValue(TUTORIAL_SERIES_KEY, null)
+        if (!data)  throw "Cannot find data for tutorial series"
+        
         let path = window.location.pathname;
         let videoIndex;
-        let index = TUTORIAL_SERIES.findIndex((seriesData)=>{
+        let index = data.findIndex((seriesData)=>{
             videoIndex = seriesData.videoLinks.findIndex((link)=>path != "/" && link.indexOf(path) != -1)
             return videoIndex != -1;
         });
@@ -91,7 +94,7 @@
         if(index == -1)
             return null;
         
-        let seriesData = TUTORIAL_SERIES[index];
+        let seriesData = data[index];
         seriesData.currentVideoIndex = videoIndex;
         return seriesData;
     }
@@ -168,8 +171,8 @@
         return seriesDataList;
     }    
 
-    let TUTORIAL_SERIES;
     const TUTORIAL_SERIES_KEY = 'tutorial_series_key';
+    const ETAG_KEY = "etag"
     
     let global = this;
     let gm = {};
@@ -225,41 +228,55 @@
         currentVideoIndex: -1               /* Uses to find previous or next video in this chapter */
     };
 
+    async function fetchLibraryPage() {
+
+        // with this Cache-Control header I get cache hits
+        const url = 'https://www.ctrlpaint.com/library'
+        let response = await fetch(url, {headers: {"Cache-Control": "max-age=0"} });
+        if(!response.ok) throw `Cannot fetch library page at ${url}`;
+
+        return response
+    }
+
+    async function parseAndStoreTutorialSeriesData(response) {
+        let pageText = await response.text();
+        let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
+
+        let tutorialSeries = readSeriesFrom(libraryDocument);
+        tutorialSeries = patchSeriesData(tutorialSeries);
+
+        await gm.setValue(TUTORIAL_SERIES_KEY, tutorialSeries);
+        await gm.setValue(ETAG_KEY, response.headers.get('ETag'))
+    }
+
     (async ()=>{
-        TUTORIAL_SERIES = await gm.getValue(TUTORIAL_SERIES_KEY, null);
-        
-        if(TUTORIAL_SERIES == null){
-            // FIRST TIME!
-            
-            let libPageEreg = /\/library\//i;
-            
-            if(libPageEreg.test(window.location.pathname)){
-                // library page, collect the series!
+        lastTutorialData = await gm.getValue(TUTORIAL_SERIES_KEY, null);
+        lastETag = await gm.getValue(ETAG_KEY, null)
+
+        // update all - it is the very first time or the previous version of the script
+        if (lastTutorialData === null || lastETag === null) {
+
+            const response = await fetchLibraryPage()
+            await parseAndStoreTutorialSeriesData(response)
+
+        } else if (lastETag !== null) {
+            // ETAG is set, so lets check it
+
+            const response = await fetchLibraryPage()
+            const currentETag = response.headers.get('etag')
+
+            // new etag, so I need to parse data again
+            if (lastETag !== currentETag)
+                await parseAndStoreTutorialSeriesData(response)
                 
-                TUTORIAL_SERIES = readSeriesFrom(document);
-                TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
-
-                await gm.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
-            } else {
-                // not a library page, need to fetch that page first
-
-                let response = await fetch('https://www.ctrlpaint.com/library/');
-                if(!response.ok) throw 'Cannot fetch library page at https://www.ctrlpaint.com/library/';
-                
-                let pageText = await response.text();
-                let libraryDocument = new DOMParser().parseFromString(pageText, 'text/html');
-
-                TUTORIAL_SERIES = readSeriesFrom(libraryDocument);
-                TUTORIAL_SERIES = patchSeriesData(TUTORIAL_SERIES);
-
-                await gm.setValue(TUTORIAL_SERIES_KEY, TUTORIAL_SERIES);
-            }
         }
 
         // check if current page is a VIDEO page
-        let seriesData = findTutorialSeriesDataForCurrentPage();
-        if(seriesData != null){
-            addButtons(seriesData);
+        if (window.location.pathname.startsWith("/videos/")) {
+
+            let seriesData = await findTutorialSeriesDataForCurrentPage();
+            if(seriesData != null) addButtons(seriesData)
+
         }
 
     })();
