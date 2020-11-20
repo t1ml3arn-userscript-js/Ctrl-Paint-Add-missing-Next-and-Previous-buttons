@@ -34,13 +34,13 @@
         return null;
     }
     function mapsListItemsToNames(list){
-        let items = list.querySelectorAll('li > a');
+        let items = list.querySelectorAll('li a');
         let result = [];
         items.forEach((item)=>result.push(item.textContent));
         return result;
     }
     function mapListItemsToLinks(list){
-        let items = list.querySelectorAll('li > a');
+        let items = list.querySelectorAll('li a');
         let result = [];
         items.forEach((item)=>result.push(item.href));
         return result;
